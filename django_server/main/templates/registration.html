@@ -1,0 +1,19 @@
+<title> B2Wars - Registration </title>
+
+<form action="{% url 'checkreg' %}" method="post">
+    <p>Username: <input type="text" name="username" id="choice{{ forloop.counter }}" checked />
+    <label for="choice{{ forloop.counter }}"></label><br /></p>
+    <p>Password: <input type="password" name="password" id="choice{{ forloop.counter }}" checked />
+    <label for="choice{{ forloop.counter }}"></label><br /></p>
+    <p>Email: <input type="text" name="email" id="choice{{ forloop.counter }}" checked />
+    <label for="choice{{ forloop.counter }}"></label><br /></p>
+    <p>First name: <input type="text" name="first_name" id="choice{{ forloop.counter }}" checked />
+    <label for="choice{{ forloop.counter }}"></label><br /></p>
+    <p>Last name: <input type="text" name="last_name" id="choice{{ forloop.counter }}" checked />
+    <label for="choice{{ forloop.counter }}"></label><br /></p>
+    
+
+<input type="submit" value="Sign up" />
+{% csrf_token %}
+
+</form>

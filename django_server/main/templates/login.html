@@ -1,0 +1,13 @@
+<title> B2Wars Login </title>
+
+<form action="{% url 'checklog' %}" method="post">
+    <p>Логин: <input type="text" name="username" id="choice{{ forloop.counter }}" checked />
+    <label for="choice{{ forloop.counter }}"></label><br /></p>
+    <p>Пароль: <input type="password" name="password" id="choice{{ forloop.counter }}" checked />
+    <label for="choice{{ forloop.counter }}"></label><br /></p>
+
+<input type="submit" value="Sign in" />
+{% csrf_token %}
+
+</form>
+<p>Don't have an account yet? <a href="/registration/">Sign up</a></p>
