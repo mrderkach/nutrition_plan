@@ -102,17 +102,12 @@ def registration_view(request):
             User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
             user = authenticate(username=username, password=password)
             login(request, user)
+            
+            
             sbg = "Welcome to Nutrition Plan!"
-            text = '''
-Dear {},
-
-We'd like to welcome you on Nutrition Plan. We worked hard on it, we worked regularly, George. We were like a united team, George, spending nights on it but immediately performing all the tasks (Attention, George!).
-We hope you'll enjoy it !
-
-Sincerely,
-Your Nutrition Plan team
-
-'''.format(first_name)
+            tmp = django.template.loader.get_template('emails/Welcome.html')
+            text = tmp.render({'name': first_name.capitalize()})  
+            #print(text)
             thread = Thread(target = send_mail, args = (sbg, text, [email], True, ))
             thread.start()            
 

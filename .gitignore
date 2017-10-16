@@ -1,3 +1,4 @@
 **/__pycache__
 **/debug.log
 .ipynb_checkpoints/
+django_server/db.sqlite3

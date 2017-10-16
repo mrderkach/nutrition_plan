@@ -80,24 +80,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'django_server.wsgi.application'
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django_server/debug.log'),
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+#LOGGING = {
+#    'version': 1,
+#    'disable_existing_loggers': False,
+#    'handlers': {
+#        'file': {
+#            'level': 'DEBUG',
+#            'class': 'logging.FileHandler',
+#            'filename': os.path.join(BASE_DIR, 'django_server/debug.log'),
+#        },
+#    },
+#    'loggers': {
+#        'django': {
+#            'handlers': ['file'],
+#            'level': 'DEBUG',
+#            'propagate': True,
+#        },
+#    },
+#}
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
