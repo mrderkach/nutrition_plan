@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^logout/', views.logout_view, name='logout'),
     url(r'^regcheck/', views.registration_view, name='checkreg'),
     url(r'^registration/', views.preregistration, name='prereg'),
-    url(r'^email/send/$', views.send_mail, name='send_email'),
+    url(r'^email/send/$', views.share_ideas, name='send_email'),
 
     url(r'^index/', views.front_page, name='front_page'),
     url(r'^$', views.main_menu, name='menu'),

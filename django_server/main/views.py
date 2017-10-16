@@ -4,6 +4,7 @@ import random
 import sys
 import string
 import time
+from threading import Thread
 import traceback
 import django.utils
 
@@ -101,6 +102,19 @@ def registration_view(request):
             User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
             user = authenticate(username=username, password=password)
             login(request, user)
+            sbg = "Welcome to Nutrition Plan!"
+            text = '''
+Dear {},
+
+We'd like to welcome you on Nutrition Plan. We worked hard on it, we worked regularly, George. We were like a united team, George, spending nights on it but immediately performing all the tasks (Attention, George!).
+We hope you'll enjoy it !
+
+Sincerely,
+Your Nutrition Plan team
+
+'''.format(first_name)
+            thread = Thread(target = send_mail, args = (sbg, text, [email], True, ))
+            thread.start()            
 
             return render(request, 'success.html', {})
         except:
@@ -114,12 +128,8 @@ def registration_view(request):
             'error': "Incorrect request",
         }
         return render(request, 'failure.html', context)
-
-#-------------------------------------------------------
-#    EXTRA
-#-------------------------------------------------------
-                                                              
-def send_mail(request):
+    
+def share_ideas(request):
     if request.method == 'POST':
         body_unicode = request.body.decode('utf-8');
         #logger.error(json.loads(body_unicode))
@@ -132,21 +142,34 @@ def send_mail(request):
             #botcheck = form.cleaned_data['botcheck'].lower()
             message = form.cleaned_data['message']
             if True: #botcheck == 'yes':
-                try:
-                    #logger.error("Trying to send")
-                    fullsubject = "[P4N | Written via form on site] {}".format(subject)
-                    fullmessage = "From: {}, {} | {}\n\n{}".format(firstname, lastname, email, message)
-                    email = EmailMessage(fullsubject, fullmessage, NoReplyEmail, [OwnerEmail])
-                    #email.content_subtype = "html"
-                    email.send()
-                    #logger.error("Message was sent")
+                fullsubject = "[P4N | Written via form on site] {}".format(subject)
+                fullmessage = "From: {}, {} | {}\n\n{}".format(firstname, lastname, email, message)  
+                if send_mail(fullsubject, fullmessage, [OwnerEmail], False):
                     return render(request, 'success.html', {})
-                except:
-                    return render(request, 'failure.html', {})
+                return render(request, 'failure.html', {})
+                
         else:
             return render(request, 'failure.html', {})
     else:
-        return render(request, 'failure.html', {})
+        return render(request, 'failure.html', {})    
+
+
+#-------------------------------------------------------
+#    EXTRA
+#-------------------------------------------------------
+                                                              
+def send_mail(subject, text, recipients, html):
+    try:
+        #logger.error("Trying to send")
+
+        email = EmailMessage(subject, text, NoReplyEmail, recipients)
+        if html:
+            email.content_subtype = "html"
+        email.send()
+        #logger.error("Message was sent")
+        return 1
+    except:
+        return 0
 
 
 
