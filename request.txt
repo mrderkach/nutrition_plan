@@ -1,0 +1,10 @@
+select r.id, r.name, r.photo_url from main_receipt r
+join
+ main_receipt_dish_type rd on r.id = rd.receipt_id 
+join
+ main_dishtype d on rd.dishtype_id = d.id
+where d.name = 'breakfast' and
+r.photo_url not like "%None%" 
+and r.protein >= 5
+group by r.id, r.name, r.photo_url
+limit 10;

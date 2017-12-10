@@ -1,192 +1,371 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <title>P4N - Menu</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- load stylesheets -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400">  <!-- Google web font "Open Sans" -->
-        <link rel="stylesheet" href="{% static 'menu/css/bootstrap.min.css' %}">                                                <!-- Bootstrap style -->
-        <link rel="stylesheet" href="{% static 'menu/css/flexslider.css' %}">                                                   <!-- Flexslider style -->       
-        <link rel="stylesheet" href="{% static 'menu/css/templatemo-style.css' %}">                                             <!-- Templatemo style -->
+  <title>P4N - Menu</title>
 
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-    </head>
-    
-    <body class="page">
-        
-            
-            <!-- background images -->
-            <div class="page-bg-imgs-list">
-                <img src="{% static 'menu/images/bg2.jpg' %}" id="menu-img" class="main-img" alt="Game">
-           </div>
-            
-            <div class="container-fluid">
+  <!-- load stylesheets -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400">  <!-- Google web font "Open Sans" -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'menu/css/bootstrap.min.css' %}">                                                <!-- Bootstrap style -->
+  <link rel="stylesheet" href="{% static 'menu/css/flexslider.css' %}">                                                   <!-- Flexslider style -->
+  <link rel="stylesheet" href="{% static 'menu/css/templatemo-style.css' %}">                                             <!-- Templatemo style -->
 
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
-                        
-                        <div class="header">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+</head>
 
-                            <!-- site title -->
-                            <header class="box box-white">
-                                <a href="javascript:void(0)" class="js-site-title">
-                                    <h1 class="box-text site-title-text">Nutrition Plan</h1>
-                                </a>            
-                            </header>
-                           
-                            <!-- site navigation -->
-                            <nav class="js-nav">
-                                <ul class="nav-items-container">
+<body class="page">
 
-                                    <li data-nav-item-id="page-1" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-left">
-                                        <a href="#page-1" class="block-keep-ratio-content box-nav-item-link">
-                                            <span class="box-text box-text-nav-item flexbox-center">Find recipe</span>
-                                        </a>
-                                    </li>
 
-                                    <li data-nav-item-id="page-2" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-right">
-                                        <a href="#page-2" class="block-keep-ratio-content box-nav-item-link">
-                                            <span class="box-text box-text-nav-item flexbox-center">Make a plan</span>
-                                        </a>
-                                    </li>
+<!-- background images -->
+<div class="page-bg-imgs-list">
+  <img src="{% static 'menu/images/bg2.jpg' %}" id="menu-img" class="main-img" alt="Game">
+</div>
 
-                                    <li data-nav-item-id="page-3" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-left">
-                                        <a href="#page-3" class="block-keep-ratio-content box-nav-item-link">
-                                            <span class="box-text box-text-nav-item flexbox-center">Extra</span>
-                                        </a>
-                                    </li>
+<div class="container-fluid">
 
-                                    <li data-nav-item-id="page-4" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-right">
-                                        <a href="#page-4" class="block-keep-ratio-content box-nav-item-link">
-                                            <span class="box-text box-text-nav-item flexbox-center">Settings</span>
-                                        </a>
-                                    </li>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
 
-                                </ul>
-                            </nav>    
-                        </div> <!-- .header -->
+      <div class="header">
 
-                    </div>
+        <!-- site title -->
+        <header class="box box-white">
+          <a href="javascript:void(0)" class="js-site-title">
+            <h1 class="box-text site-title-text">Nutrition Plan</h1>
+          </a>
+        </header>
 
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
-                        <div class="content-wrapper js-content-wrapper">
-                            <!-- game -->
-                            <section data-page-id="page-1" class="content js-content">
-                                
-                                <header class="box box-black margin-b-20">
-                                    <h2 class="box-text page-title-text">Find recipe</h2>
-                                </header>
+        <!-- site navigation -->
+        <nav class="js-nav">
+          <ul class="nav-items-container">
 
-                                <div class="content-text">
-                                    <p>
-                                    </p>
+            <li data-nav-item-id="page-1" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-left">
+              <a href="#page-1" class="block-keep-ratio-content box-nav-item-link">
+                <span class="box-text box-text-nav-item flexbox-center">Find recipe</span>
+              </a>
+            </li>
 
-                                </div>            
+            <li data-nav-item-id="page-2" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-right">
+              <a href="#page-2" class="block-keep-ratio-content box-nav-item-link">
+                <span class="box-text box-text-nav-item flexbox-center">Make a plan</span>
+              </a>
+            </li>
 
-                            </section> <!-- #game -->
+            <li data-nav-item-id="page-3" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-left">
+              <a href="#page-3" class="block-keep-ratio-content box-nav-item-link">
+                <span class="box-text box-text-nav-item flexbox-center">Extra</span>
+              </a>
+            </li>
 
-                            <!-- choose deck -->
-                            <section data-page-id="page-2" class="content content-gallery js-content">
-                                
-                                <header class="box box-black margin-b-20">
-                                    <h2 class="box-text page-title-text">Make a plan</h2>
-                                </header>
-                                
-                                <div class="content-text content-text-gallery">
-                                    
-                                    <div class="flexslider-wrapper">
+            <li data-nav-item-id="page-4" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-right">
+              <a href="#page-4" class="block-keep-ratio-content box-nav-item-link">
+                <span class="box-text box-text-nav-item flexbox-center">Settings</span>
+              </a>
+            </li>
 
-                                        <div id="slider" class="flexslider">
-                                            <ul class="slides">
-                                                <li><img src="{% static 'menu/images/slider/slide1.jpg' %}" alt="Slide 1" /></li>
-                                                <li><img src="{% static 'menu/images/slider/slide2.jpg' %}" alt="Slide 2" /></li>
-                                                <li><img src="{% static 'menu/images/slider/slide3.jpg' %}" alt="Slide 3" /></li>
-                                                <li><img src="{% static 'menu/images/slider/slide4.jpg' %}" alt="Slide 4" /></li>
-                                                <li><img src="{% static 'menu/images/slider/slide5.jpg' %}" alt="Slide 5" /></li>
-                                                <li><img src="{% static 'menu/images/slider/slide6.jpg' %}" alt="Slide 6" /></li>
-                                            </ul>
-                                        </div> <!-- #slider -->
-                                      
-                                        <div id="carousel" class="flexslider">
-                                            <ul class="slides">
-                                                <li><img src="{% static 'menu/images/slider/thumb1.jpg' %}" alt="Thumbnail 1" /></li>
-                                                <li><img src="{% static 'menu/images/slider/thumb2.jpg' %}" alt="Thumbnail 2" /></li>
-                                                <li><img src="{% static 'menu/images/slider/thumb3.jpg' %}" alt="Thumbnail 3" /></li>
-                                                <li><img src="{% static 'menu/images/slider/thumb4.jpg' %}" alt="Thumbnail 4" /></li>
-                                                <li><img src="{% static 'menu/images/slider/thumb5.jpg' %}" alt="Thumbnail 5" /></li>
-                                                <li><img src="{% static 'menu/images/slider/thumb6.jpg' %}" alt="Thumbnail 6" /></li>
-                                            </ul>
-                                        </div>  <!-- #carousel -->
+          </ul>
+        </nav>
+      </div> <!-- .header -->
 
-                                    </div>
-                                        
-                                </div>            
+    </div>
 
-                            </section> <!-- #choose deck -->
-                            
-                            <!-- rating -->
-                            <section data-page-id="page-3" class="content js-content">
-                                
-                                <header class="box box-black margin-b-20">
-                                    <h2 class="box-text page-title-text">Extra</h2>
-                                </header>
-                                
-                                <div class="content-text">
-                                    <p>Some functions I didn't come up with yet</p>
-                                </div>            
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
+      <div class="content-wrapper js-content-wrapper">
+        <!-- game -->
+        <section data-page-id="page-1" class="content js-content">
 
-                            </section> <!-- #rating -->
+          <header class="box box-black margin-b-20">
+            <h2 class="box-text page-title-text">Find recipe</h2>
+          </header>
 
-                            <!-- settings -->
-                            <section data-page-id="page-4" class="content js-content">
-                                
-                                <header class="box box-black margin-b-20">
-                                    <h2 class="box-text page-title-text">Settings</h2>
-                                </header>
-                                
-                                <div class="content-text">
+          <div class="content-text">
+            <div id="app">
+              <v-app>
+                <v-content>
+                  <v-container fluid>
+                    <my-form></my-form>
+                  </v-container>
+                </v-content>
+              </v-app>
+            </div>
 
-                                    <p>
-                                    <a rel="nofollow" href="{% url 'logout' %}" target="_self">Logout</a>
-                                    </p>                           
-                                </div>            
+            <script type="text/x-template" id="form-template">
+              <v-card class="grey lighten-3">
+                <v-toolbar card prominent class="white">
+                  <v-text-field label="Search" single-line hide-details v-model="search"></v-text-field>
+                  <v-btn icon @click.stop="searchOnClick">
+                    <v-icon>search</v-icon>
+                  </v-btn>
+                </v-toolbar>
+                <v-card-text class="white">
+                  <v-expansion-panel>
+                    <v-expansion-panel-content>
+                      <div slot="header">Advanced search</div>
+                      <full-search @search="searchOnClick"></full-search>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-card-text>
+                <my-table :data-table="tableData"></my-table>
+              </v-card>
+            </script>
 
-                            </section> <!-- #Settings -->
-                        </div>
-                    </div>
+            <script type="text/x-template" id="search-template">
+              <v-card>
+                <v-card-text class="grey lighten-3">
+                  <v-layout>
+                    <v-flex xs12 sm10 offset-sm1 lg8 offset-lg2>
+                      <v-select v-model="fullSearch.dishtype"
+                                :items="dishtypes"
+                                label="Dishtype"
+                      ></v-select>
+		      <input type="checkbox" id="withphoto" v-model="fullSearch.withphoto">
+		      <label for="checkbox">With photo</label>
 
-                </div>
-                    
-                <!-- footer row -->
-                <footer class="row footer js-footer">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		      <p>Protein: 
+		      <input v-model="fullSearch.proteinmin" type="number" placeholder="min">
+		      <input v-model="fullSearch.proteinmax"  type="number" placeholder="max">
+		      </p>
+		      <p>Fat: 
+		      <input v-model="fullSearch.fatmin" type="number" placeholder="min">
+		      <input v-model="fullSearch.fatmax"  type="number" placeholder="max">
+		      </p>
+		      <p>Calories: 
+		      <input v-model="fullSearch.calmin" type="number" placeholder="min">
+		      <input v-model="fullSearch.calmax"  type="number" placeholder="max">
+		      </p>
+                    </v-flex>
+                  </v-layout>
+                </v-card-text>
+                <v-card-text>
+                  <v-layout justify-end>
+                    <v-btn flat @click.stop="clear">
+                      <v-icon left>delete</v-icon>
+                      Clear
+                    </v-btn>
+                    <v-btn flat @click.stop="$emit('search', fullSearch)" color="primary">
+                      <v-icon left color="primary">search</v-icon>
+                      Search
+                    </v-btn>
+                  </v-layout>
+                </v-card-text>
+              </v-card>
+            </script>
 
-                        <p class="copyright-text">Copyright &copy; 2017 Plan4Nutrition </p>  
+            <script type="text/x-template" id="table-template">
+              <v-card-text>
+                <v-list three-line>
+                  <template v-for="item in dataTable">
+                    <v-list-tile avatar :key="item.title" :href="item.link">
+                      <v-list-tile-avatar>
+                        <img :src="item.img"/>
+                      </v-list-tile-avatar>
+                      <v-list-tile-content>
+                        <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                      </v-list-tile-content>
+                    </v-list-tile>
+                  </template>
+                </v-list>
+              </v-card-text>
+            </script>
 
-                    </div>                
-                </footer>
+          </div>
 
-            </div>  <!-- .container-fluid -->
+        </section> <!-- #game -->
 
-        <div id="preloader">
-            <div id="status">&nbsp;</div>
-        </div><!-- /#preloader -->      
-            
-        <!-- load JS files -->
-        <script src="{% static 'menu/js/jquery-1.11.3.min.js' %}"></script> <!-- jQuery -->
-        <script src="{% static 'menu/js/jquery.flexslider-min.js' %}"></script> <!-- Flex Slider -->
-        <script src="{% static 'menu/js/jquery.backstretch.min.js' %}"></script> <!-- Backstretch http://srobbin.com/jquery-plugins/backstretch/ -->
-        <script src="{% static 'menu/js/templatemo-script.js' %}"></script> <!-- Templatemo scripts -->
-    
-    </body>
+        <!-- choose deck -->
+        <section data-page-id="page-2" class="content content-gallery js-content">
+
+          <header class="box box-black margin-b-20">
+            <h2 class="box-text page-title-text">Make a plan</h2>
+          </header>
+
+          <div class="content-text content-text-gallery">
+
+            <div class="flexslider-wrapper">
+
+              <div id="slider" class="flexslider">
+                <ul class="slides">
+                  <li><img src="{% static 'menu/images/slider/slide1.jpg' %}" alt="Slide 1" /></li>
+                  <li><img src="{% static 'menu/images/slider/slide2.jpg' %}" alt="Slide 2" /></li>
+                  <li><img src="{% static 'menu/images/slider/slide3.jpg' %}" alt="Slide 3" /></li>
+                  <li><img src="{% static 'menu/images/slider/slide4.jpg' %}" alt="Slide 4" /></li>
+                  <li><img src="{% static 'menu/images/slider/slide5.jpg' %}" alt="Slide 5" /></li>
+                  <li><img src="{% static 'menu/images/slider/slide6.jpg' %}" alt="Slide 6" /></li>
+                </ul>
+              </div> <!-- #slider -->
+
+              <div id="carousel" class="flexslider">
+                <ul class="slides">
+                  <li><img src="{% static 'menu/images/slider/thumb1.jpg' %}" alt="Thumbnail 1" /></li>
+                  <li><img src="{% static 'menu/images/slider/thumb2.jpg' %}" alt="Thumbnail 2" /></li>
+                  <li><img src="{% static 'menu/images/slider/thumb3.jpg' %}" alt="Thumbnail 3" /></li>
+                  <li><img src="{% static 'menu/images/slider/thumb4.jpg' %}" alt="Thumbnail 4" /></li>
+                  <li><img src="{% static 'menu/images/slider/thumb5.jpg' %}" alt="Thumbnail 5" /></li>
+                  <li><img src="{% static 'menu/images/slider/thumb6.jpg' %}" alt="Thumbnail 6" /></li>
+                </ul>
+              </div>  <!-- #carousel -->
+
+            </div>
+
+          </div>
+
+        </section> <!-- #choose deck -->
+
+        <!-- rating -->
+        <section data-page-id="page-3" class="content js-content">
+
+          <header class="box box-black margin-b-20">
+            <h2 class="box-text page-title-text">Extra</h2>
+          </header>
+
+          <div class="content-text">
+            <p>Some functions I didn't come up with yet</p>
+          </div>
+
+        </section> <!-- #rating -->
+
+        <!-- settings -->
+        <section data-page-id="page-4" class="content js-content">
+
+          <header class="box box-black margin-b-20">
+            <h2 class="box-text page-title-text">Settings</h2>
+          </header>
+
+          <div class="content-text">
+
+            <p>
+              <a rel="nofollow" href="{% url 'logout' %}" target="_self">Logout</a>
+            </p>
+          </div>
+
+        </section> <!-- #Settings -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- footer row -->
+  <footer class="row footer js-footer">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+      <p class="copyright-text">Copyright &copy; 2017 Plan4Nutrition </p>
+
+    </div>
+  </footer>
+
+</div>  <!-- .container-fluid -->
+
+<div id="preloader">
+  <div id="status">&nbsp;</div>
+</div><!-- /#preloader -->
+
+<!-- load JS files -->
+<script src="{% static 'menu/js/jquery-1.11.3.min.js' %}"></script> <!-- jQuery -->
+<script src="{% static 'menu/js/jquery.flexslider-min.js' %}"></script> <!-- Flex Slider -->
+<script src="{% static 'menu/js/jquery.backstretch.min.js' %}"></script> <!-- Backstretch http://srobbin.com/jquery-plugins/backstretch/ -->
+<script src="{% static 'menu/js/templatemo-script.js' %}"></script> <!-- Templatemo scripts -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const searchUrl = '/api/search'
+
+  const FullSearch = {
+    name: 'full-search',
+    template: '#search-template',
+    data () {
+      return {
+        fullSearch: {
+          dishtype: ''
+        },
+        dishtypes: [
+          { value: 'breakfast', text: 'breakfast' },
+          { value: 'drink', text: 'drink' },
+          { value: 'salad', text: 'salad' }
+        ]
+      }
+    },
+    methods: {
+      clear () {
+	this.search = '',
+        this.fullSearch.dishtype = ''
+	this.fullSearch.withphoto = '',
+        this.fullSearch.proteinmin = '',
+	this.fullSearch.proteinmax = '',
+	this.fullSearch.calmin = '',
+	this.fullSearch.calmax = '',
+	this.fullSearch.fatmin = '',
+	this.fullSearch.fatmax = ''
+      }
+    }
+  }
+
+  const MyTable = {
+    name: 'my-table',
+    template: '#table-template',
+    props: {
+      dataTable: {
+        require: true,
+        type: Array
+      }
+    },
+    mounted () {
+      console.log('dataTable', this.dataTable)
+    }
+  }
+
+  const MyForm = {
+    name: 'my-form',
+    template: '#form-template',
+    components: {
+      FullSearch,
+      MyTable
+    },
+    data () {
+      return {
+        search: '',
+        searchQuery: {},
+        tableData: [
+        ]
+      }
+    },
+    methods: {
+      searchOnClick (fullSearch) {
+        let params = {}
+        if (fullSearch instanceof Event) {
+          params = { search: this.search }
+        } else {
+	  fullSearch.search = this.search
+          params = fullSearch
+        }
+        axios
+          .get(searchUrl, { params })
+          .then(response => {
+            this.tableData = response.data
+          }).catch(err => {
+          console.log(err, err.response)
+        })
+      }
+    }
+  }
+
+  new Vue({
+    el: '#app',
+    components: {
+      MyForm
+    }
+  })
+</script>
+</body>
 </html>

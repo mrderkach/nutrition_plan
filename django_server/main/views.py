@@ -9,7 +9,7 @@ import traceback
 import django.utils
 
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from django.views.generic.base import TemplateView
 from django.template.context_processors import csrf
 from django.contrib.auth import authenticate, login, logout
@@ -18,11 +18,17 @@ from django.core.urlresolvers import reverse
 from django.template import Context
 from django.core.mail import EmailMessage
 
-from main.models import EmailForm
+from main.models import EmailForm, Receipt, IngredientCategory, Ingredient, DishType
 
 OwnerEmail = 'denis_der@mail.ru'
 NoReplyEmail = 'plan4nutrition@gmail.com'
 logger = logging.getLogger('django')
+
+no_photo = [
+"https://assets.epicurious.com/photos/5a0ddb046e013d11dde39630/6:4/w_322,h_314,c_limit/no-recipe-card-green-15112017.jpg",
+"https://assets.epicurious.com/photos/5a0ddb06f110de5830af9a10/6:4/w_322,h_314,c_limit/no-recipe-card-red-15112017.jpg",
+"https://assets.epicurious.com/photos/5a0ddb14c8636449b01bb813/6:4/w_322,h_314,c_limit/no-recipe-card-blue-15112017.jpg"
+]
 
 #-------------------------------------------------------
 #    PAGES
@@ -147,6 +153,94 @@ def share_ideas(request):
             return render(request, 'failure.html', {})
     else:
         return render(request, 'failure.html', {})    
+    
+def detail(request):
+    try:
+        print(1122 in Receipt.objects.values_list('id', flat=True))
+        obj = Receipt.objects.get(id=int(QueryDict(request.GET.urlencode())['id']))
+        return HttpResponse('''
+Recipe: {}
+Ingredients: 
+Calories: {}
+Proteins: {}
+Fat: {}
+Sodium: {}
+Type: 
+Instructions: {}
+'''.format(obj.name, obj.calories, obj.protein, obj.fat, obj.sodium, obj.instructions.replace("/n", "\n")))
+    except:
+        return render(request, 'failure.html', {'error': "Can't find recipe"}) 
+    
+    
+def search(request):
+    #print("\n\n\n\n\n\n\n\n\n\n", request.GET.urlencode())
+    
+    search_req = 'r.name like "%{}%"'
+    dishtype_req = 'd.name = "{}"'
+    with_photo_req = 'r.photo_url not like "%None%"'
+    protein_min_req = 'r.protein >= {}'
+    protein_max_req = 'r.protein <= {}'
+    fat_min_req = 'r.fat >= {}'
+    fat_max_req = 'r.fat <= {}'
+    cal_min_req = 'r.calories >= {}'
+    cal_min_req = 'r.calories >= {}'
+    
+    
+    query = QueryDict(request.GET.urlencode())
+    requests = []
+    if 'search' in query and query['search'] != '':
+        requests += ["(" + " OR ".join(search_req.format(i) for i in query['search'].split()) + ")"]
+    if 'dishtype' in query and query['dishtype'] != '':
+        requests += [dishtype_req.format(query['dishtype'])]
+    if 'withphoto' in query:
+        requests += [with_photo_req]
+    if 'proteinmin' in query:
+        requests += [protein_min_req.format(query['proteinmin'])]    
+    if 'proteinmax' in query:
+        requests += [protein_max_req.format(query['proteinmax'])]    
+    if 'fatmin' in query:
+        requests += [fat_min_req.format(query['fatmin'])]    
+    if 'fatmax' in query:
+        requests += [fat_max_req.format(query['fatmax'])]    
+    if 'calmin' in query:
+        requests += [cal_min_req.format(query['calmin'])]    
+    if 'calmax' in query:
+        requests += [cal_min_req.format(query['calmax'])]    
+        
+    if len(requests) == 0:
+        return HttpResponse()
+    
+    print('''
+SELECT r.id, r.name, r.photo_url FROM main_receipt r
+JOIN
+ main_receipt_dish_type rd on r.id = rd.receipt_id 
+JOIN
+ main_dishtype d on rd.dishtype_id = d.id
+WHERE {}
+GROUP BY r.id, r.name, r.photo_url
+limit 50;
+'''.format(" AND ".join(requests)))
+    
+    results = []
+    for i in Receipt.objects.raw('''
+SELECT r.id, r.name, r.photo_url FROM main_receipt r
+JOIN
+ main_receipt_dish_type rd on r.id = rd.receipt_id 
+JOIN
+ main_dishtype d on rd.dishtype_id = d.id
+WHERE {}
+GROUP BY r.id, r.name, r.photo_url
+limit 50
+'''.format(" AND ".join(requests))):
+        results += [{
+            'link': reverse('detail') + "?id={}".format(i.id),
+            'title': i.name
+        }]
+        if "None" in i.photo_url or "http" not in i.photo_url:
+            results[-1]['img'] = random.choice(no_photo)
+        else:
+            results[-1]['img'] = i.photo_url
+    return HttpResponse(json.dumps(results))
 
 
 #-------------------------------------------------------

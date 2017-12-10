@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'^regcheck/', views.registration_view, name='checkreg'),
     url(r'^registration/', views.preregistration, name='prereg'),
     url(r'^email/send/$', views.share_ideas, name='send_email'),
+    url(r'^api/search$', views.search, name='search'),
+    url(r'^receipts$', views.detail, name='detail'),
 
     url(r'^index/', views.front_page, name='front_page'),
     url(r'^$', views.main_menu, name='menu'),
