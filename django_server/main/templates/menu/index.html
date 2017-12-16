@@ -64,7 +64,7 @@
 
             <li data-nav-item-id="page-3" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-left">
               <a href="#page-3" class="block-keep-ratio-content box-nav-item-link">
-                <span class="box-text box-text-nav-item flexbox-center">Extra</span>
+                <span class="box-text box-text-nav-item flexbox-center">My collection</span>
               </a>
             </li>
 
@@ -124,11 +124,16 @@
               <v-card>
                 <v-card-text class="grey lighten-3">
                   <v-layout>
-                    <v-flex xs12 sm10 offset-sm1 lg8 offset-lg2>
+                    <v-flex xs12 sm6 offset-lg2>
                       <v-select v-model="fullSearch.dishtype"
                                 :items="dishtypes"
                                 label="Dishtype"
+				multiple
+				chips
+				autocomplete
+				max-height="400"
                       ></v-select>
+		      
 		      <input type="checkbox" id="withphoto" v-model="fullSearch.withphoto">
 		      <label for="checkbox">With photo</label>
 
@@ -163,20 +168,32 @@
             </script>
 
             <script type="text/x-template" id="table-template">
-              <v-card-text>
-                <v-list three-line>
-                  <template v-for="item in dataTable">
-                    <v-list-tile avatar :key="item.title" :href="item.link">
-                      <v-list-tile-avatar>
-                        <img :src="item.img"/>
-                      </v-list-tile-avatar>
-                      <v-list-tile-content>
-                        <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                      </v-list-tile-content>
-                    </v-list-tile>
-                  </template>
-                </v-list>
-              </v-card-text>
+	      <v-flex xs12>	      		  
+		<v-layout column>
+		    <v-container fluid grid-list-md class="grey lighten-4">
+		      <v-layout row wrap>
+			<v-flex
+			  v-bind="{ [`xs${item.flex}`]: true }"
+			  v-for="item in dataTable"
+			  :key="item.title"
+			>
+			  <v-card :href="item.link">
+			    <v-toolbar color="gray" dark>
+			      <v-toolbar-title v-html="item.title"></v-toolbar-title>
+			    </v-toolbar>
+			    <v-card-media
+			      :src="item.img"
+			      height="200px"
+			    >
+			    </v-card-media>
+			  </v-card>
+			</v-flex>
+		      </v-layout>
+		    </v-container>
+		</v-layout>		  
+		
+	      </v-flex>
+              
             </script>
 
           </div>
@@ -226,11 +243,147 @@
         <section data-page-id="page-3" class="content js-content">
 
           <header class="box box-black margin-b-20">
-            <h2 class="box-text page-title-text">Extra</h2>
+            <h2 class="box-text page-title-text">My collection</h2>
           </header>
 
           <div class="content-text">
-            <p>Some functions I didn't come up with yet</p>
+            <div id="app2">
+              <v-app>
+                <v-content>
+                  <v-container fluid>
+                    <my-form2></my-form2>
+                  </v-container>
+                </v-content>
+              </v-app>
+            </div>
+
+	    <script type="text/x-template" id="form-template2">
+              <v-card>
+                <v-card-text>
+                  <v-expansion-panel>
+                    <v-expansion-panel-content>
+                      <div slot="header">Add recipe</div>
+                      <add-recipe @add="searchOnClick"></add-recipe>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-card-text>
+                <my-table2 :data-table="tableData"></my-table2>
+              </v-card>
+            </script>
+
+            <script type="text/x-template" id="recipe-template">
+              <v-card dark>
+                <v-card-text>
+		  <v-container grid-list-md>
+		    <v-layout row wrap>
+		      
+		      <v-flex xs12 sm12>
+			<v-text-field
+			  v-model="addRecipe.name"
+			  label="Name"
+			></v-text-field>
+		      </v-flex>
+	
+		      <v-flex xs12 sm6>
+			<v-select v-model="addRecipe.dishtype"
+			  :items="dishtypes"
+			  label="Dishtype"
+			  multiple
+			  chips
+			  autocomplete
+			  max-height="400"
+			></v-select>
+		      </v-flex>
+		      
+		      <v-flex xs12 sm6>
+			<v-select v-model="addRecipe.ingredient"
+			  :items="ingredients"
+			  label="Ingredients"
+			  multiple
+			  chips
+			  autocomplete
+			  max-height="400"
+			></v-select>
+		      </v-flex>
+		    
+		      <v-flex xs12 sm4>
+			<v-text-field
+			  v-model="addRecipe.protein"
+			  label="Protein"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      <v-flex xs12 sm4>
+			<v-text-field
+			  v-model="addRecipe.fat"
+			  label="Fat"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      <v-flex xs12 sm4>
+			<v-text-field
+			  v-model="addRecipe.cal"
+			  label="Calories"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      
+		      <v-flex xs12 sm12>
+			<v-text-field
+			  v-model="addRecipe.instructions"
+			  label="Instructions"
+			  multi-line
+			></v-text-field>
+		      </v-flex>
+
+		    </v-layout>
+		  </v-container>
+
+                </v-card-text>
+                <v-card-text>
+                  <v-layout justify-end>
+                    <v-btn flat @click.stop="clear">
+                      <v-icon left>delete</v-icon>
+                      Clear
+                    </v-btn>
+                    <v-btn flat @click.stop="$emit('add', addRecipe)">
+                      <v-icon left>add</v-icon>
+                      Add
+                    </v-btn>
+                  </v-layout>
+                </v-card-text>
+              </v-card>
+            </script>
+
+            <script type="text/x-template" id="table-template2">
+	      <v-flex xs12>	      		  
+		<v-layout column>
+		    <v-container fluid grid-list-md class="grey lighten-4">
+		      <v-layout row wrap>
+			<v-flex
+			  v-bind="{ [`xs${item.flex}`]: true }"
+			  v-for="item in dataTable"
+			  :key="item.title"
+			>
+			  <v-card :href="item.link">
+			    <v-toolbar color="gray" dark>
+			      <v-toolbar-title v-html="item.title"></v-toolbar-title>
+			    </v-toolbar>
+			    <v-card-media
+			      :src="item.img"
+			      height="200px"
+			    >
+			    </v-card-media>
+			  </v-card>
+			</v-flex>
+		      </v-layout>
+		    </v-container>
+		</v-layout>		  
+		
+	      </v-flex>
+              
+            </script>
+
           </div>
 
         </section> <!-- #rating -->
@@ -280,6 +433,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
   const searchUrl = '/api/search'
+  const addUrl = '/api/add'
 
   const FullSearch = {
     name: 'full-search',
@@ -290,16 +444,41 @@
           dishtype: ''
         },
         dishtypes: [
-          { value: 'breakfast', text: 'breakfast' },
-          { value: 'drink', text: 'drink' },
-          { value: 'salad', text: 'salad' }
+	  { value: 'appetizer', text: 'appetizer' },
+	  { value: 'backyard bbq', text: 'backyard bbq' },
+	  { value: 'breakfast', text: 'breakfast' },
+	  { value: 'brunch', text: 'brunch' },
+	  { value: 'camping', text: 'camping' },
+	  { value: 'cocktail', text: 'cocktail' },
+	  { value: 'dessert', text: 'dessert' },
+	  { value: 'digestif', text: 'digestif' },
+	  { value: 'dinner', text: 'dinner' },
+	  { value: 'drink', text: 'drink' },
+	  { value: 'drinks', text: 'drinks' },
+	  { value: 'grill', text: 'grill' },
+	  { value: 'grill/barbecue', text: 'grill/barbecue' },
+	  { value: "hors d'oeuvre", text: "hors d'oeuvre"},
+	  { value: 'hot drink', text: 'hot drink' },
+	  { value: 'house cocktail', text: 'house cocktail' },
+	  { value: 'lunch', text: 'lunch' },
+	  { value: 'party', text: 'party' },
+	  { value: 'picnic', text: 'picnic' },
+	  { value: 'vegan', text: 'vegan' },
+	  { value: 'vegetarian', text: 'vegetarian' },
+	  { value: 'leftovers', text: 'leftovers' },
+	  { value: 'snack', text: 'snack' },
+	  { value: 'salad', text: 'salad' },
+	  { value: 'sandwich', text: 'sandwich' },
+	  { value: 'seafood', text: 'seafood' },
+	  { value: 'pancake', text: 'pancake' },
+	  { value: 'muffin', text: 'muffin' }	
         ]
       }
     },
     methods: {
       clear () {
 	this.search = '',
-        this.fullSearch.dishtype = ''
+        this.fullSearch.dishtype = []
 	this.fullSearch.withphoto = '',
         this.fullSearch.proteinmin = '',
 	this.fullSearch.proteinmax = '',
@@ -310,10 +489,94 @@
       }
     }
   }
+  
+  
+  const AddRecipe = {
+    name: 'add-recipe',
+    template: '#recipe-template',
+    data () {
+      return {
+        addRecipe: {
+          dishtype: '',
+	  ingredient:  ''
+        },
+        dishtypes: [
+	  { value: 'appetizer', text: 'appetizer' },
+	  { value: 'backyard bbq', text: 'backyard bbq' },
+	  { value: 'breakfast', text: 'breakfast' },
+	  { value: 'brunch', text: 'brunch' },
+	  { value: 'camping', text: 'camping' },
+	  { value: 'cocktail', text: 'cocktail' },
+	  { value: 'dessert', text: 'dessert' },
+	  { value: 'digestif', text: 'digestif' },
+	  { value: 'dinner', text: 'dinner' },
+	  { value: 'drink', text: 'drink' },
+	  { value: 'drinks', text: 'drinks' },
+	  { value: 'grill', text: 'grill' },
+	  { value: 'grill/barbecue', text: 'grill/barbecue' },
+	  { value: "hors d'oeuvre", text: "hors d'oeuvre" },
+	  { value: 'hot drink', text: 'hot drink' },
+	  { value: 'house cocktail', text: 'house cocktail' },
+	  { value: 'lunch', text: 'lunch' },
+	  { value: 'party', text: 'party' },
+	  { value: 'picnic', text: 'picnic' },
+	  { value: 'vegan', text: 'vegan' },
+	  { value: 'vegetarian', text: 'vegetarian' },
+	  { value: 'leftovers', text: 'leftovers' },
+	  { value: 'snack', text: 'snack' },
+	  { value: 'salad', text: 'salad' },
+	  { value: 'sandwich', text: 'sandwich' },
+	  { value: 'seafood', text: 'seafood' },
+	  { value: 'pancake', text: 'pancake' },
+	  { value: 'muffin', text: 'muffin' }	  
+        ],
+	ingredients: [
+	  { value: 'almond', text: 'almond'},
+	  { value: 'anchovy', text: 'anchovy'},
+	  { value: 'anise', text: 'anise'},
+	  { value: 'apple', text: 'apple'},
+	  { value: 'apple juice', text: 'apple juice'},
+	  { value: 'apricot', text: 'apricot'},
+	  { value: 'artichoke', text: 'artichoke'},
+	  { value: 'arugula', text: 'arugula'},
+	  { value: 'asian pear', text: 'asian pear'},
+	  { value: 'asparagus', text: 'asparagus'},
+	  { value: 'aspen', text: 'aspen'},
+	  { value: 'avocado', text: 'avocado'}
+
+	]
+      }
+    },
+    methods: {
+      clear () {
+	this.addRecipe.dishtype = [],
+	this.addRecipe.ingredient = [],
+	this.addRecipe.name = ''
+	this.addRecipe.protein = ''
+	this.addRecipe.fat = ''
+	this.addRecipe.cal = ''
+      }
+    }
+  }
+
 
   const MyTable = {
     name: 'my-table',
     template: '#table-template',
+    props: {
+      dataTable: {
+        require: true,
+        type: Array
+      }
+    },
+    mounted () {
+      console.log('dataTable', this.dataTable)
+    }
+  }
+  
+  const MyTable2 = {
+    name: 'my-table2',
+    template: '#table-template2',
     props: {
       dataTable: {
         require: true,
@@ -359,11 +622,52 @@
       }
     }
   }
+  
+  const MyForm2 = {
+    name: 'my-form2',
+    template: '#form-template2',
+    components: {
+      AddRecipe,
+      MyTable2
+    },
+    data () {
+      return {
+        searchQuery: {},
+        tableData: [
+        ]
+      }
+    },
+    methods: {
+      searchOnClick (addRecipe) {
+        let params = {}
+        
+        params = addRecipe
+	if (params.name == null || params.name === '') {
+	  delete params.name	
+	} else {
+	  axios
+	    .get(addUrl, { params })
+	    .then(response => {
+	      this.tableData = response.data
+	    }).catch(err => {
+	    console.log(err, err.response)
+	  })
+	}
+      }
+    }
+  }
 
   new Vue({
     el: '#app',
     components: {
       MyForm
+    }
+  })
+  
+  new Vue({
+    el: '#app2',
+    components: {
+      MyForm2
     }
   })
 </script>

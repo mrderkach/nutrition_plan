@@ -8,6 +8,7 @@ from threading import Thread
 import traceback
 import django.utils
 
+from django.db import connection
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from django.views.generic.base import TemplateView
@@ -156,18 +157,27 @@ def share_ideas(request):
     
 def detail(request):
     try:
-        print(1122 in Receipt.objects.values_list('id', flat=True))
         obj = Receipt.objects.get(id=int(QueryDict(request.GET.urlencode())['id']))
+        types = []
+        for i in obj.dish_type.all():
+            types += [i.name]
+        ingredients = []
+        for i in obj.ingredients.all():
+            ingredients += [i.name]        
         return HttpResponse('''
 Recipe: {}
-Ingredients: 
+Ingredients: {}
 Calories: {}
 Proteins: {}
 Fat: {}
 Sodium: {}
-Type: 
+Type: {}
 Instructions: {}
-'''.format(obj.name, obj.calories, obj.protein, obj.fat, obj.sodium, obj.instructions.replace("/n", "\n")))
+'''.format(obj.name, 
+           ", ".join(ingredients),
+           obj.calories, obj.protein, obj.fat, obj.sodium, 
+           ", ".join(types),
+           obj.instructions.replace("/n", "\n")))
     except:
         return render(request, 'failure.html', {'error': "Can't find recipe"}) 
     
@@ -177,6 +187,7 @@ def search(request):
     
     search_req = 'r.name like "%{}%"'
     dishtype_req = 'd.name = "{}"'
+    dishtype_full = 'HAVING sum( case when {} then 1 end) >= {}'
     with_photo_req = 'r.photo_url not like "%None%"'
     protein_min_req = 'r.protein >= {}'
     protein_max_req = 'r.protein <= {}'
@@ -185,30 +196,37 @@ def search(request):
     cal_min_req = 'r.calories >= {}'
     cal_min_req = 'r.calories >= {}'
     
-    
     query = QueryDict(request.GET.urlencode())
+    dish_types = request.GET.getlist('dishtype[]')
     requests = []
     if 'search' in query and query['search'] != '':
         requests += ["(" + " OR ".join(search_req.format(i) for i in query['search'].split()) + ")"]
-    if 'dishtype' in query and query['dishtype'] != '':
-        requests += [dishtype_req.format(query['dishtype'])]
     if 'withphoto' in query:
         requests += [with_photo_req]
-    if 'proteinmin' in query:
+    if 'proteinmin' in query and query['proteinmin'] != '':
         requests += [protein_min_req.format(query['proteinmin'])]    
-    if 'proteinmax' in query:
+    if 'proteinmax' in query and query['proteinmax'] != '':
         requests += [protein_max_req.format(query['proteinmax'])]    
-    if 'fatmin' in query:
+    if 'fatmin' in query and query['fatmin'] != '':
         requests += [fat_min_req.format(query['fatmin'])]    
-    if 'fatmax' in query:
+    if 'fatmax' in query and query['fatmax'] != '':
         requests += [fat_max_req.format(query['fatmax'])]    
-    if 'calmin' in query:
+    if 'calmin' in query and query['calmin'] != '':
         requests += [cal_min_req.format(query['calmin'])]    
-    if 'calmax' in query:
-        requests += [cal_min_req.format(query['calmax'])]    
+    if 'calmax' in query and query['calmax'] != '':
+        requests += [cal_min_req.format(query['calmax'])] 
         
-    if len(requests) == 0:
+    if len(dish_types) != 0:
+        dishtype_ready = dishtype_full.format(' OR '.join(dishtype_req.format(i) for i in dish_types), len(dish_types))
+    else:
+        dishtype_ready = ""
+        
+    if len(requests) == 0 and dishtype_ready == "": 
         return HttpResponse()
+    if len(requests) == 0:
+        requests_ready = ""
+    else:
+        requests_ready = "WHERE " + " AND ".join(requests)
     
     print('''
 SELECT r.id, r.name, r.photo_url FROM main_receipt r
@@ -216,10 +234,11 @@ JOIN
  main_receipt_dish_type rd on r.id = rd.receipt_id 
 JOIN
  main_dishtype d on rd.dishtype_id = d.id
-WHERE {}
+{}
 GROUP BY r.id, r.name, r.photo_url
-limit 50;
-'''.format(" AND ".join(requests)))
+{}
+limit 60
+'''.format(requests_ready, dishtype_ready))
     
     results = []
     for i in Receipt.objects.raw('''
@@ -228,18 +247,70 @@ JOIN
  main_receipt_dish_type rd on r.id = rd.receipt_id 
 JOIN
  main_dishtype d on rd.dishtype_id = d.id
-WHERE {}
+{}
 GROUP BY r.id, r.name, r.photo_url
-limit 50
-'''.format(" AND ".join(requests))):
+{}
+limit 60
+'''.format(requests_ready, dishtype_ready)):
         results += [{
             'link': reverse('detail') + "?id={}".format(i.id),
-            'title': i.name
+            'title': i.name,
+            'flex': 4,
         }]
         if "None" in i.photo_url or "http" not in i.photo_url:
             results[-1]['img'] = random.choice(no_photo)
         else:
             results[-1]['img'] = i.photo_url
+    return HttpResponse(json.dumps(results))
+
+def add_recipe(request):
+    #print("\n\n\n\n\n\n\n\n\n\n", request.GET.urlencode())
+    
+    query = QueryDict(request.GET.urlencode())
+    dish_types = request.GET.getlist('dishtype[]')
+    insert_info = []
+    if 'name' not in query:
+        return HttpResponse()
+    
+    insert_info += ["'{}'".format(query['name'])]
+    insert_info += [
+        str(int(query['protein'])) if 'protein' in query else "0",
+        str(int(query['fat'])) if 'fat' in query else "0",
+        str(int(query['cal'])) if 'cal' in query else "0",
+        "0", "'None'",
+        "'{}'".format(query['instructions']) if 'instructions' in query else "''"
+    ]
+    
+    print('''
+INSERT INTO main_receipt (name, protein, fat, calories, sodium, photo_url, instructions)
+VALUES ({})
+'''.format(", ".join(insert_info)))
+    
+    results = []
+    connection.cursor().execute('''
+INSERT INTO main_receipt (name, protein, fat, calories, sodium, photo_url, instructions)
+VALUES ({})
+'''.format(", ".join(insert_info)))
+    
+    i = Receipt.objects.get(name=query['name'])
+    results += [{
+        'link': reverse('detail') + "?id={}".format(i.id),
+        'title': i.name,
+        'flex': 4,
+    }]
+    if "None" in i.photo_url or "http" not in i.photo_url:
+        results[-1]['img'] = random.choice(no_photo)
+    else:
+        results[-1]['img'] = i.photo_url
+        
+    if "ingredient[]" in query:
+        for j in request.GET.getlist('ingredient[]'):
+            ing = Ingredient.objects.get(name=j)
+            connection.cursor().execute('''
+INSERT INTO main_receipt_ingredients (receipt_id, ingredient_id)
+VALUES ({}, {})
+        '''.format(i.id, ing.id))            
+            
     return HttpResponse(json.dumps(results))
 
 
