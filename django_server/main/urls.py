@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^email/send/$', views.share_ideas, name='send_email'),
     url(r'^api/search$', views.search, name='search'),
     url(r'^api/add$', views.add_recipe, name='add_recipe'),
+    url(r'^api/gen$', views.gen_recipe, name='gen_recipe'),
     url(r'^receipts$', views.detail, name='detail'),
 
     url(r'^index/', views.front_page, name='front_page'),

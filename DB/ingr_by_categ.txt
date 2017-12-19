@@ -1,0 +1,396 @@
+name,category
+almond,5
+amaretto,10
+anchovy,7
+anise,10
+apple,2
+apple juice,11
+apricot,2
+artichoke,1
+arugula,3
+asian pear,2
+asparagus,3
+aspen,10
+avocado,2
+bacon,6
+banana,2
+barley,9
+basil,3
+bass,7
+bean,14
+beef,6
+beef rib,6
+beef shank,6
+beef tenderloin,6
+beer,10
+beet,1
+bell pepper,1
+berry,4
+biscuit,12
+bitters,10
+blackberry,4
+blue cheese,8
+blueberry,4
+boil,20
+bok choy,3
+bourbon,10
+bran,12
+brandy,10
+bread,12
+breadcrumbs,12
+brie,8
+brine,11
+brisket,6
+broccoli,1
+broccoli rabe,1
+brown rice,9
+brownie,12
+brunch,20
+brussel sprout,1
+buffalo,6
+bulgur,9
+burrito,12
+butter,8
+buttermilk,8
+butternut squash,2
+butterscotch/caramel,13
+cabbage,1
+calvados,10
+campari,10
+candy,13
+cantaloupe,2
+capers,14
+caraway,3
+cardamom,3
+carrot,1
+cashew,5
+casserole/gratin,8
+cauliflower,1
+caviar,7
+celery,1
+chambord,10
+champagne,10
+chard,3
+chartreuse,10
+cheddar,8
+cheese,8
+cherry,4
+chestnut,5
+chicken,6
+chickpea,14
+chile pepper,1
+chive,1
+chocolate,13
+cilantro,3
+cinnamon,3
+citrus,2
+clam,7
+clove,3
+coconut,5
+coffee,14
+cognac/armagnac,10
+collard greens,1
+condiment,3
+condiment/spread,3
+cookie,12
+cookies,12
+coriander,3
+corn,9
+cornmeal,12
+cottage cheese,8
+couscous,9
+crab,7
+cranberry,4
+cranberry sauce,15
+cream cheese,8
+creme de cacao,15
+crepe,12
+cucumber,1
+cumin,3
+cupcake,12
+currant,4
+curry,3
+custard,8
+dairy,8
+date,2
+dessert,13
+dill,3
+dip,15
+dried fruit,2
+duck,6
+eau de vie,10
+egg,16
+egg nog,11
+eggplant,1
+endive,3
+escarole,3
+fennel,3
+feta,8
+fig,4
+fish,7
+flat bread,12
+fontina,8
+fortified wine,10
+frangelico,10
+frittata,16
+fritter,16
+fruit,2
+fruit juice,11
+fry,7
+game,6
+garlic,3
+gin,10
+ginger,3
+goat cheese,8
+goose,6
+gouda,8
+grains,9
+grand marnier,10
+granola,9
+grape,4
+grapefruit,2
+grappa,10
+green bean,14
+green onion/scallion,3
+ground beef,6
+ground lamb,6
+guava,2
+halibut,7
+ham,6
+hamburger,6
+hazelnut,5
+herb,3
+hominy/cornmeal/masa,9
+honey,13
+honeydew,2
+horseradish,3
+hot pepper,2
+hummus,9
+ice cream,8
+iced coffee,11
+iced tea,11
+jalapeno,2
+jam or jelly,13
+jerusalem artichoke,2
+kale,1
+kirsch,10
+kiwi,2
+kosher,20
+kosher for passover,20
+kumquat,2
+kwanzaa,20
+lamb,6
+lamb chop,6
+lamb shank,6
+lasagna,6
+leafy green,3
+leek,2
+legume,14
+lemon,2
+lemon juice,11
+lemongrass,3
+lentil,14
+lettuce,3
+lima bean,14
+lime,2
+lime juice,11
+lingonberry,4
+liqueur,10
+lobster,7
+lychee,2
+macadamia nut,5
+macaroni and cheese,17
+mango,2
+maple syrup,15
+margarita,10
+marinade,15
+marsala,10
+marscarpone,8
+marshmallow,13
+martini,10
+mayonnaise,15
+meat,6
+meatball,6
+meatloaf,6
+melon,2
+mezcal,10
+midori,10
+milk/cream,8
+mint,3
+molasses,15
+monterey jack,8
+mozzarella,8
+mushroom,18
+mussel,7
+mustard,15
+mustard greens,14
+nectarine,2
+noodle,17
+nut,5
+nutmeg,5
+oat,9
+oatmeal,9
+octopus,7
+okra,1
+olive,4
+omelet,16
+onion,1
+orange,2
+orange juice,11
+oregano,3
+orzo,17
+oyster,7
+papaya,2
+paprika,3
+parmesan,8
+parsley,3
+parsnip,1
+passion fruit,2
+pasta,17
+pastry,13
+pea,14
+peach,2
+peanut,5
+peanut butter,13
+pear,2
+pecan,5
+pepper,1
+pernod,10
+persimmon,2
+phyllo/puff pastry dough,12
+pickles,1
+pie,12
+pine nut,5
+pineapple,2
+pistachio,5
+pizza,12
+plantain,3
+plum,2
+poach,16
+poblano,1
+pomegranate,2
+pomegranate juice,11
+poppy,14
+pork,6
+pork chop,6
+pork rib,6
+pork tenderloin,6
+port,10
+pot pie,12
+potato,14
+potato salad,14
+poultry,6
+poultry sausage,6
+prosciutto,6
+prune,2
+pumpkin,1
+punch,10
+quail,6
+quiche,12
+quinoa,9
+rabbit,6
+rack of lamb,6
+radicchio,3
+radish,1
+raisin,4
+ramekin,14
+raspberry,4
+raw,6
+red wine,10
+rhubarb,1
+rice,9
+ricotta,8
+roast,6
+root vegetable,1
+rosemary,3
+rum,10
+rutabaga,1
+rye,14
+saffron,3
+sage,3
+sake,10
+salad dressing,3
+salmon,7
+salsa,15
+sangria,10
+sardine,7
+sauce,15
+sausage,6
+saute,6
+scallop,7
+scotch,10
+seed,14
+semolina,9
+sesame,14
+sesame oil,15
+shallot,1
+shellfish,7
+sherry,10
+shrimp,7
+smoothie,10
+snapper,7
+sorbet,11
+souffle/meringue,13
+soup/stew,19
+sour cream,8
+sourdough,8
+soy,3
+soy sauce,15
+sparkling wine,10
+spice,3
+spinach,3
+spirit,10
+spritzer,10
+squash,9
+squid,7
+steak,6
+stew,19
+strawberry,4
+sugar conscious,20
+sugar snap pea,14
+sweet potato/yam,14
+swiss cheese,8
+swordfish,7
+taco,12
+tamarind,3
+tangerine,2
+tapioca,14
+tarragon,3
+tart,12
+tea,11
+tequila,10
+thyme,3
+tilapia,7
+tofu,14
+tomatillo,1
+tomato,1
+tortillas,12
+tree nut,5
+triple sec,10
+tropical fruit,2
+trout,7
+tuna,7
+turnip,1
+vanilla,3
+veal,6
+vegetable,1
+venison,6
+vermouth,10
+vinegar,15
+vodka,10
+waffle,12
+walnut,5
+wasabi,3
+watercress,3
+watermelon,4
+whiskey,10
+white wine,10
+whole wheat,12
+wild rice,9
+wine,10
+wok,17
+yellow squash,1
+yogurt,8
+yuca,1
+zucchini,14
+turkey,5

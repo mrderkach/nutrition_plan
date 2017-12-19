@@ -7,6 +7,7 @@ import time
 from threading import Thread
 import traceback
 import django.utils
+from ast import literal_eval as make_tuple
 
 from django.db import connection
 from django.shortcuts import render, render_to_response
@@ -35,10 +36,70 @@ no_photo = [
 #    PAGES
 #-------------------------------------------------------
 
+def get_data():
+    data = {
+    "rec":0,
+    "ingr": 0,
+    "cat":0,
+    "tag":0,
+    "tagrec": 0,
+    "ingrec": 0
+    }    
+    
+    c = connection.cursor().execute('''
+SELECT count(r.id) FROM main_receipt r
+''')
+    data["rec"] = c.fetchone()[0]
+    c = connection.cursor().execute('''
+SELECT count(i.id) FROM main_ingredient i
+''')
+    data["ingr"] = c.fetchone()[0]
+    c = connection.cursor().execute('''
+SELECT count(ic.id) FROM main_ingredientcategory ic
+''')
+    data["cat"] = c.fetchone()[0]
+    c = connection.cursor().execute('''
+SELECT count(d.id) FROM main_dishtype d
+''')
+    data["tag"] = c.fetchone()[0]
+    
+    c = connection.cursor().execute('''
+SELECT avg(val) FROM 
+(SELECT count(dishtype_id) as val FROM main_receipt_dish_type
+    GROUP BY receipt_id )
+
+''')
+    data["tagrec"] = c.fetchone()[0]
+    c = connection.cursor().execute('''
+SELECT avg(val) FROM 
+(SELECT count(ingredient_id) as val FROM main_receipt_ingredients
+    GROUP BY receipt_id )
+
+''')
+    data["ingrec"] = c.fetchone()[0]    
+    
+    
+    #JOIN
+     #main_receipt_dish_type rd on r.id = rd.receipt_id 
+    #JOIN
+     #main_dishtype d on rd.dishtype_id = d.id
+    #JOIN
+     #main_receipt_ingredients ri on ri.receipt_id = r.id
+    #JOIN 
+     #main_ingredient i on ri.ingredient_id = i.id
+    #JOIN
+     #main_ingredientcategory ic on i.category_id = ic.id
+    #{}
+    #GROUP BY r.id, r.name, r.photo_url
+    #{}
+    #limit 60    
+    
+    return data
+
 def main_menu(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('front_page'))
-    return render(request, 'menu/index.html', {})
+    return render(request, 'menu/index.html', {"stat": get_data()})
 
 
 def front_page(request):
@@ -187,7 +248,8 @@ def search(request):
     
     search_req = 'r.name like "%{}%"'
     dishtype_req = 'd.name = "{}"'
-    dishtype_full = 'HAVING sum( case when {} then 1 end) >= {}'
+    catstype_req = 'ic.name = "{}"'
+    after_full = 'sum( case when {} then 1 end) >= {}'
     with_photo_req = 'r.photo_url not like "%None%"'
     protein_min_req = 'r.protein >= {}'
     protein_max_req = 'r.protein <= {}'
@@ -198,6 +260,7 @@ def search(request):
     
     query = QueryDict(request.GET.urlencode())
     dish_types = request.GET.getlist('dishtype[]')
+    cats_types = request.GET.getlist('ingredientcategory[]')
     requests = []
     if 'search' in query and query['search'] != '':
         requests += ["(" + " OR ".join(search_req.format(i) for i in query['search'].split()) + ")"]
@@ -216,16 +279,22 @@ def search(request):
     if 'calmax' in query and query['calmax'] != '':
         requests += [cal_min_req.format(query['calmax'])] 
         
+    after_ready = []
     if len(dish_types) != 0:
-        dishtype_ready = dishtype_full.format(' OR '.join(dishtype_req.format(i) for i in dish_types), len(dish_types))
-    else:
-        dishtype_ready = ""
+        after_ready += [after_full.format(' OR '.join(dishtype_req.format(i) for i in dish_types), len(dish_types))]
         
-    if len(requests) == 0 and dishtype_ready == "": 
+    if len(cats_types) != 0:
+        after_ready += [after_full.format(' OR '.join(catstype_req.format(i) for i in cats_types), len(cats_types))]
+        
+    if len(requests) == 0 and len(after_ready) == 0: 
         return HttpResponse()
     if len(requests) == 0:
         requests_ready = ""
     else:
+        if len(after_ready) > 0:
+            after_ready = "HAVING " + " AND ".join(after_ready)
+        else:
+            after_ready = ""
         requests_ready = "WHERE " + " AND ".join(requests)
     
     print('''
@@ -234,11 +303,17 @@ JOIN
  main_receipt_dish_type rd on r.id = rd.receipt_id 
 JOIN
  main_dishtype d on rd.dishtype_id = d.id
+JOIN
+ main_receipt_ingredients ri on ri.receipt_id = r.id
+JOIN 
+ main_ingredient i on ri.ingredient_id = i.id
+JOIN
+ main_ingredientcategory ic on i.category_id = ic.id
 {}
 GROUP BY r.id, r.name, r.photo_url
 {}
 limit 60
-'''.format(requests_ready, dishtype_ready))
+'''.format(requests_ready, after_ready))
     
     results = []
     for i in Receipt.objects.raw('''
@@ -247,11 +322,17 @@ JOIN
  main_receipt_dish_type rd on r.id = rd.receipt_id 
 JOIN
  main_dishtype d on rd.dishtype_id = d.id
+JOIN
+ main_receipt_ingredients ri on ri.receipt_id = r.id
+JOIN 
+ main_ingredient i on ri.ingredient_id = i.id
+JOIN
+ main_ingredientcategory ic on i.category_id = ic.id
 {}
 GROUP BY r.id, r.name, r.photo_url
 {}
 limit 60
-'''.format(requests_ready, dishtype_ready)):
+'''.format(requests_ready, after_ready)):
         results += [{
             'link': reverse('detail') + "?id={}".format(i.id),
             'title': i.name,
@@ -312,6 +393,61 @@ VALUES ({}, {})
         '''.format(i.id, ing.id))            
             
     return HttpResponse(json.dumps(results))
+
+def gen_recipe(request):
+    req = '''
+SELECT r.id, r.name, r.photo_url FROM main_receipt r
+JOIN
+ main_receipt_dish_type rd on r.id = rd.receipt_id 
+JOIN
+ main_dishtype d on rd.dishtype_id = d.id
+WHERE r.calories >= {} and r.calories <= {}
+GROUP BY r.id, r.name, r.photo_url
+HAVING (sum( case when d.name == "{}" then 1 end) >= 1)
+limit 100
+'''
+    
+    query = QueryDict(request.GET.urlencode())
+    if 'cal' in query and query['cal'] != '':
+        cal = int(query['cal'])
+    else:
+        return HttpResponse()
+    
+    cals = [
+        cal * 0.3,
+        cal * 0.5,
+        cal * 0.2,
+        cal * 0.35,
+        cal * 0.2,
+        cal * 0.35,
+    ]
+    types = [
+        "breakfast",
+        "lunch",
+        "dinner",
+    ]
+    dishes = [[], [], []]
+    for i in range(3):
+        print(req.format(cals[2*i], cals[2*i+1], dishes[i]))
+        dishes[i] = list(Receipt.objects.raw(req.format(cals[2*i], cals[2*i+1], types[i])))
+        
+        
+    results = []
+    for i in range(7):
+        for j in range(3):
+            dish = random.choice(dishes[j])
+
+            results += [{
+                'link': reverse('detail') + "?id={}".format(dish.id),
+                'title': dish.name,
+                'flex': 4,
+            }]
+            if "None" in dish.photo_url or "http" not in dish.photo_url:
+                results[-1]['img'] = random.choice(no_photo)
+            else:
+                results[-1]['img'] = dish.photo_url
+    return HttpResponse(json.dumps(results))
+
 
 
 #-------------------------------------------------------

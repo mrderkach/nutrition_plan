@@ -58,7 +58,7 @@
 
             <li data-nav-item-id="page-2" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-right">
               <a href="#page-2" class="block-keep-ratio-content box-nav-item-link">
-                <span class="box-text box-text-nav-item flexbox-center">Make a plan</span>
+                <span class="box-text box-text-nav-item flexbox-center">Gallery</span>
               </a>
             </li>
 
@@ -71,6 +71,17 @@
             <li data-nav-item-id="page-4" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-right">
               <a href="#page-4" class="block-keep-ratio-content box-nav-item-link">
                 <span class="box-text box-text-nav-item flexbox-center">Settings</span>
+              </a>
+            </li>
+	    
+	    <li data-nav-item-id="page-5" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-right">
+              <a href="#page-5" class="block-keep-ratio-content box-nav-item-link">
+                <span class="box-text box-text-nav-item flexbox-center">Statistics</span>
+              </a>
+            </li>
+	    <li data-nav-item-id="page-6" class="block-keep-ratio block-keep-ratio-1-1 block-width-half box box-white box-nav-item js-nav-item pull-xs-left">
+              <a href="#page-6" class="block-keep-ratio-content box-nav-item-link">
+                <span class="box-text box-text-nav-item flexbox-center">Make a plan</span>
               </a>
             </li>
 
@@ -121,36 +132,84 @@
             </script>
 
             <script type="text/x-template" id="search-template">
-              <v-card>
-                <v-card-text class="grey lighten-3">
-                  <v-layout>
-                    <v-flex xs12 sm6 offset-lg2>
-                      <v-select v-model="fullSearch.dishtype"
-                                :items="dishtypes"
-                                label="Dishtype"
-				multiple
-				chips
-				autocomplete
-				max-height="400"
-                      ></v-select>
+              <v-card dark>
+                <v-card-text>
+		  <v-container grid-list-md>
+		    <v-layout row wrap>
+	
+		      <v-flex xs12 sm6>
+			<v-select v-model="fullSearch.dishtype"
+			  :items="dishtypes"
+			  label="Dishtype"
+			  multiple
+			  chips
+			  autocomplete
+			  max-height="400"
+			></v-select>
+		      </v-flex>
 		      
-		      <input type="checkbox" id="withphoto" v-model="fullSearch.withphoto">
-		      <label for="checkbox">With photo</label>
+		      <v-flex xs12 sm6>
+			<v-select v-model="fullSearch.ingredientcategory"
+			  :items="ingrCategories"
+			  label="Include categories"
+			  multiple
+			  chips
+			  autocomplete
+			  max-height="400"
+			></v-select>
+		      </v-flex>
+		    
+		      <v-flex xs12 sm12>
+			<input type="checkbox" id="withphoto" v-model="fullSearch.withphoto">
+			<label for="checkbox">With photo</label>	
+		       </v-flex>
+		    
+		      <v-flex xs12 sm6>
+			<v-text-field
+			  v-model="fullSearch.proteinmin"
+			  label="Protein min"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      <v-flex xs12 sm6>
+			<v-text-field
+			  v-model="fullSearch.proteinmax"
+			  label="Protein max"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      <v-flex xs12 sm6>
+			<v-text-field
+			  v-model="fullSearch.fatmin"
+			  label="Fat min"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      <v-flex xs12 sm6>
+			<v-text-field
+			  v-model="fullSearch.fatmax"
+			  label="Fat max"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      <v-flex xs12 sm6>
+			<v-text-field
+			  v-model="fullSearch.calmin"
+			  label="Calories min"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      <v-flex xs12 sm6>
+			<v-text-field
+			  v-model="fullSearch.calmax"
+			  label="Calories max"
+			  type="number" 
+			></v-text-field>
+		      </v-flex>
+		      
 
-		      <p>Protein: 
-		      <input v-model="fullSearch.proteinmin" type="number" placeholder="min">
-		      <input v-model="fullSearch.proteinmax"  type="number" placeholder="max">
-		      </p>
-		      <p>Fat: 
-		      <input v-model="fullSearch.fatmin" type="number" placeholder="min">
-		      <input v-model="fullSearch.fatmax"  type="number" placeholder="max">
-		      </p>
-		      <p>Calories: 
-		      <input v-model="fullSearch.calmin" type="number" placeholder="min">
-		      <input v-model="fullSearch.calmax"  type="number" placeholder="max">
-		      </p>
-                    </v-flex>
-                  </v-layout>
+		    </v-layout>
+		  </v-container>
                 </v-card-text>
                 <v-card-text>
                   <v-layout justify-end>
@@ -158,8 +217,8 @@
                       <v-icon left>delete</v-icon>
                       Clear
                     </v-btn>
-                    <v-btn flat @click.stop="$emit('search', fullSearch)" color="primary">
-                      <v-icon left color="primary">search</v-icon>
+                    <v-btn flat @click.stop="$emit('search', fullSearch)">
+                      <v-icon left>search</v-icon>
                       Search
                     </v-btn>
                   </v-layout>
@@ -403,6 +462,136 @@
           </div>
 
         </section> <!-- #Settings -->
+	
+	<!-- statistics -->
+        <section data-page-id="page-5" class="content js-content">
+
+          <header class="box box-black margin-b-20">
+            <h2 class="box-text page-title-text">Statistics</h2>
+          </header>
+
+          <div class="content-text">
+
+            <p>
+	    Number of recipes: {{ stat.rec }}
+            </p>
+	    <p>
+	    Number of ingredients: {{ stat.ingr }}
+            </p>
+	    <p>
+	    Number of ingredient categories: {{ stat.cat }}
+            </p>
+	    <p>
+	    Number of recipe types (tags): {{ stat.tag }}
+            </p>
+	    <p>
+	    Average number of tags in recipe: {{ stat.tagrec }}
+            </p>
+	    <p>
+	    Average number of ingredients in recipe: {{ stat.ingrec }}
+            </p>
+          </div>
+
+        </section> <!-- #statistics -->
+	
+	        <!-- choose deck -->
+        <section data-page-id="page-6" class="content js-content">
+
+          <header class="box box-black margin-b-20">
+            <h2 class="box-text page-title-text">Make a plan</h2>
+          </header>
+
+          <div class="content-text">
+            <div id="app3">
+              <v-app>
+                <v-content>
+                  <v-container fluid>
+                    <my-form3></my-form3>
+                  </v-container>
+                </v-content>
+              </v-app>
+            </div>
+
+	    <script type="text/x-template" id="form-template3">
+              <v-card>
+                <v-card-text>
+                  <v-expansion-panel>
+                    <v-expansion-panel-content>
+                      <div slot="header">Generate</div>
+                      <gen-recipe @gen="searchOnClick"></gen-recipe>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-card-text>
+                <my-table3 :data-table="tableData"></my-table3>
+              </v-card>
+            </script>
+
+            <script type="text/x-template" id="gen-template">
+              <v-card dark>
+                <v-card-text>
+		  <v-container grid-list-md>
+		    <v-layout row wrap>
+		      
+		      <v-flex xs12 sm6>
+			<v-select v-model="genRecipe.cal"
+			  :items="calories"
+			  label="Calories plan per day"
+			  chips
+			  max-height="400"
+			></v-select>
+		      </v-flex>
+
+		    </v-layout>
+		  </v-container>
+
+                </v-card-text>
+                <v-card-text>
+                  <v-layout justify-end>
+                    <v-btn flat @click.stop="clear">
+                      <v-icon left>delete</v-icon>
+                      Clear
+                    </v-btn>
+                    <v-btn flat @click.stop="$emit('gen', genRecipe)">
+                      <v-icon left>build</v-icon>
+                      Generate
+                    </v-btn>
+                  </v-layout>
+                </v-card-text>
+              </v-card>
+            </script>
+
+            <script type="text/x-template" id="table-template3">
+	      <v-flex xs12>	      		  
+		<v-layout column>
+		    <v-container fluid grid-list-md class="grey lighten-4">
+		      <v-layout row wrap>
+			<v-flex
+			  v-bind="{ [`xs${item.flex}`]: true }"
+			  v-for="item in dataTable"
+			  :key="item.title"
+			>
+			  <v-card :href="item.link">
+			    <v-toolbar color="gray" dark>
+			      <v-toolbar-title v-html="item.title"></v-toolbar-title>
+			    </v-toolbar>
+			    <v-card-media
+			      :src="item.img"
+			      height="200px"
+			    >
+			    </v-card-media>
+			  </v-card>
+			</v-flex>
+		      </v-layout>
+		    </v-container>
+		</v-layout>		  
+		
+	      </v-flex>
+              
+            </script>
+
+          </div>
+
+        </section> <!-- #choose deck -->
       </div>
     </div>
 
@@ -434,6 +623,7 @@
 <script>
   const searchUrl = '/api/search'
   const addUrl = '/api/add'
+  const genUrl = '/api/gen'
 
   const FullSearch = {
     name: 'full-search',
@@ -472,13 +662,35 @@
 	  { value: 'seafood', text: 'seafood' },
 	  { value: 'pancake', text: 'pancake' },
 	  { value: 'muffin', text: 'muffin' }	
-        ]
+        ],
+	ingrCategories: [
+	  { value: 'vegetable', text: 'vegetable' },
+	  { value: 'fruit', text: 'fruit' },
+	  { value: 'herb', text: 'herb' },
+	  { value: 'berry', text: 'berry' },
+	  { value: 'nut', text: 'nut' },
+	  { value: 'meat', text: 'meat' },
+	  { value: 'fish\seafood', text: 'fish\seafood' },
+	  { value: 'dairy', text: 'dairy' },
+	  { value: 'cereal\grain', text: 'cereal\grain' },
+	  { value: 'alchohol', text: 'alchohol' },
+	  { value: 'drink', text: 'drink' },
+	  { value: 'flour', text: 'flour' },
+	  { value: 'sweet', text: 'sweet' },
+	  { value: 'seed\crop', text: 'seed\crop' },
+	  { value: 'sauce\syrup', text: 'sauce\syrup' },
+	  { value: 'egg', text: 'egg' },
+	  { value: 'pasta', text: 'pasta' },
+	  { value: 'mushroom', text: 'mushroom' },
+	  { value: 'soup', text: 'soup' }
+	]
       }
     },
     methods: {
       clear () {
 	this.search = '',
-        this.fullSearch.dishtype = []
+        this.fullSearch.dishtype = [],
+	this.fullSearch.ingredientcategory = [],
 	this.fullSearch.withphoto = '',
         this.fullSearch.proteinmin = '',
 	this.fullSearch.proteinmax = '',
@@ -559,6 +771,28 @@
     }
   }
 
+  const GenRecipe = {
+    name: 'gen-recipe',
+    template: '#gen-template',
+    data () {
+      return {
+        genRecipe: {
+	  cal:  ''
+        },
+	calories: [
+	  { value: '1200', text: '1200' },
+	  { value: '1600', text: '1600' },
+	  { value: '2000', text: '2000' },
+	]
+      }
+    },
+    methods: {
+      clear () {
+	this.genRecipe.cal = ''
+      }
+    }
+  }
+
 
   const MyTable = {
     name: 'my-table',
@@ -577,6 +811,20 @@
   const MyTable2 = {
     name: 'my-table2',
     template: '#table-template2',
+    props: {
+      dataTable: {
+        require: true,
+        type: Array
+      }
+    },
+    mounted () {
+      console.log('dataTable', this.dataTable)
+    }
+  }
+  
+  const MyTable3 = {
+    name: 'my-table3',
+    template: '#table-template3',
     props: {
       dataTable: {
         require: true,
@@ -656,6 +904,40 @@
       }
     }
   }
+  
+  const MyForm3 = {
+    name: 'my-form3',
+    template: '#form-template3',
+    components: {
+      GenRecipe,
+      MyTable3
+    },
+    data () {
+      return {
+        searchQuery: {},
+        tableData: [
+        ]
+      }
+    },
+    methods: {
+      searchOnClick (genRecipe) {
+        let params = {}
+        
+        params = genRecipe
+	if (params.cal == null || params.cal === '') {
+	  delete params.cal	
+	} else {
+	  axios
+	    .get(genUrl, { params })
+	    .then(response => {
+	      this.tableData = response.data
+	    }).catch(err => {
+	    console.log(err, err.response)
+	  })
+	}
+      }
+    }
+  }
 
   new Vue({
     el: '#app',
@@ -668,6 +950,13 @@
     el: '#app2',
     components: {
       MyForm2
+    }
+  })
+  
+  new Vue({
+    el: '#app3',
+    components: {
+      MyForm3
     }
   })
 </script>
