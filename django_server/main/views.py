@@ -256,7 +256,7 @@ def search(request):
     fat_min_req = 'r.fat >= {}'
     fat_max_req = 'r.fat <= {}'
     cal_min_req = 'r.calories >= {}'
-    cal_min_req = 'r.calories >= {}'
+    cal_max_req = 'r.calories <= {}'
     
     query = QueryDict(request.GET.urlencode())
     dish_types = request.GET.getlist('dishtype[]')
@@ -277,7 +277,7 @@ def search(request):
     if 'calmin' in query and query['calmin'] != '':
         requests += [cal_min_req.format(query['calmin'])]    
     if 'calmax' in query and query['calmax'] != '':
-        requests += [cal_min_req.format(query['calmax'])] 
+        requests += [cal_max_req.format(query['calmax'])] 
         
     after_ready = []
     if len(dish_types) != 0:
@@ -384,9 +384,25 @@ VALUES ({})
     else:
         results[-1]['img'] = i.photo_url
         
+    if "dishtype[]" in query:
+        for j in request.GET.getlist('dishtype[]'):
+            ing = DishType.objects.get(name=j)
+            print('''
+INSERT INTO main_receipt_dish_type (receipt_id, dishtype_id)
+VALUES ({}, {})
+        '''.format(i.id, ing.id))
+            connection.cursor().execute('''
+INSERT INTO main_receipt_dish_type (receipt_id, dishtype_id)
+VALUES ({}, {})
+        '''.format(i.id, ing.id))        
+        
     if "ingredient[]" in query:
         for j in request.GET.getlist('ingredient[]'):
             ing = Ingredient.objects.get(name=j)
+            print('''
+INSERT INTO main_receipt_ingredients (receipt_id, ingredient_id)
+VALUES ({}, {})
+        '''.format(i.id, ing.id))
             connection.cursor().execute('''
 INSERT INTO main_receipt_ingredients (receipt_id, ingredient_id)
 VALUES ({}, {})
